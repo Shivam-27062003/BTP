@@ -6,10 +6,8 @@ import sys,re
 '''
 
 class Custom_Error(Exception):
- 
     def __init__(self, value):
-        self.value = value
- 
+        self.value = value 
     def __str__(self):
         return(repr(self.value))
 
@@ -18,13 +16,13 @@ class Custom_Error(Exception):
 '''
 
 def create_ast(code_file):
-	try:
-		index = cindex.Index.create()
-		translation_unit = index.parse(code_file)
-		ast = translation_unit.cursor
-		return ast
-	except:
-		print(Custom_Error("AST creation failed"))
+	# try:
+	index = cindex.Index.create()
+	translation_unit = index.parse(code_file)
+	ast = translation_unit.cursor
+	return ast
+	# except:
+		# print(Custom_Error("AST creation failed"))
 
 '''
 	extract global variables and the main function's 
@@ -41,8 +39,8 @@ def extract_variables(ast_node: any,variables: list
 		elif ast_node.kind == cindex.CursorKind.FUNCTION_DECL \
 								and ast_node.spelling == 'main':
 				flag = True
-		elif flag == True and  depth>1 \
-				and ast_node.kind==cindex.CursorKind.VAR_DECL:
+		elif ast_node.kind==cindex.CursorKind.VAR_DECL \
+							and flag == True and  depth>1:
 				variables.append((ast_node.type.spelling,
 								ast_node.spelling))
 		for child_node in ast_node.get_children():
@@ -90,7 +88,7 @@ def create_code_chunk_CPROVER_assert(variables: list) -> str:
 		for i in range(len(artificial_variables)):
 			x = artificial_variables[i]
 			y = original_variables[i]
-			line2+= '{}={};\n'.format(y,x)
+			line2+= '{}={};\n'.format(x,y)
 		code_chunk = line1 + '\n' + line2
 		return code_chunk
 	except:
@@ -118,12 +116,56 @@ def find_loop_pattern(code,code_chunk):
 	loop_pattern = r'(?:for|while|do)\s*\([^)]*\)\s*\{([^}]+)\}'
 	matches = re.finditer(loop_pattern, code)
 	for match in matches:
+		print(match.group[0])
 		loop_content = match.group(1)
+		print(loop_content)
 		temp = loop_content
 		modified_loop_content =temp + '\n' +  code_chunk
+		print(modified_loop_content)
 		code = code.replace(loop_content, modified_loop_content)
 	return code
 
+def trace_extraction(tracefile):
+	with open(tracefile,'r') as file:
+		trace = file.read()
+	trace = re.sub(r'^.*==.*$', '', trace, flags=re.MULTILINE)
+	assignment_lines = re.findall(r'(.+?)\s*=\s*(-?\d+)([^=])', trace)
+	unique_vars: dict = {}
+	for line in assignment_lines:
+		arr = []
+		for word in line:
+			temp  = ''
+			for c in word:
+				if c == ' ':
+					continue
+				temp += c
+			arr.append(temp)
+		x = ''
+		for i in range(1,len(arr)):
+			x += arr[i]
+		unique_vars[arr[0]] = int(x)
+	variables_with_values = {}
+	for x,y in unique_vars.items():
+		if x[0] == 'o' and x[1] == '_':
+			continue
+		variables_with_values[x] = y
+	return variables_with_values
+
+def create_code_chunk_CPROVER_assume(code,variables,variables_values_extracted_from_trace):
+	temp = ''
+	for variable in variables:
+		if variable not in variables_values_extracted_from_trace:
+			continue
+		if variable[0] =='o' and variable[1] =='_':
+			continue
+		if temp!='':
+			temp += ' && '
+		temp += variable +'=='+ str(variables_values_extracted_from_trace[variable])
+	if temp!='':
+		code_chunk = '__CPROVER_assume(!(' + temp + '));\n'
+		pattern = r'(__CPROVER_assert\(.*\);)'
+		modified_code = re.sub(pattern, code_chunk + '\n\\1', code)
+	return modified_code
 
 if __name__ == "__main__":
 	filepath: str = None
@@ -138,6 +180,3 @@ if __name__ == "__main__":
 	code_chunk = create_code_chunk_CPROVER_assert(variables)
 	code = find_loop_pattern(code,code_chunk)
 	print(code)
-	# with open(filepath, 'w') as new_file:
-	# 	new_file.write(code)
-                           
