@@ -29,5 +29,5 @@ The implementation is divided into following steps:
   
 # Professor
 
-* Kumar Madhukar
+* <b>Prof. Kumar Madhukar</b>
 
