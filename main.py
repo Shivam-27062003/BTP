@@ -1,5 +1,6 @@
 from utils import *
 import os
+from verifier import *
 
 if __name__ == "__main__":
 	# take input c++ file and replicate the file 
@@ -36,7 +37,7 @@ if __name__ == "__main__":
 	trace.append(trace_extraction('trace'))
 
 	# inject cbmc assume statement and again get the trace repeat it k times
-	for i in range(30):
+	for i in range(1):
 		with open('replica.cpp','r') as file:
 			code = file.read()
 			file.close()
@@ -58,12 +59,36 @@ if __name__ == "__main__":
 				Trace[x].append(Dict[x])
 
 	# develop the heuristic to apply fix for the bug
-	patch = generate_patch(Trace,variables)
-	print(patch)
-
-	# run verifier on the fixed code 
-
-	# if fixed return new code 
-
+	patches = generate_patch(Trace,variables)
+	# print(patches)
 	command = 'rm replica.cpp trace'
 	# os.system(command)
+	# run verifier on the fixed code 
+	for i in range(1,(1<<len(patches))):
+		patch_code = ''
+		temp = []
+		for j in range(0,31):
+			if (i&(1<<j)):
+				temp.append(patches[j])
+		for j in range(len(temp)):
+			patch_code+=temp[j]
+			if j!=len(temp)-1:
+				patch_code+= ' && '
+		patch_code = f'if(!({patch_code}))break;'
+		with open(filename,'r') as file:
+			code = file.read()
+		file.close()
+		code = find_loop_pattern(code,patch_code)
+		with open('replica.cpp','w') as temp_file:
+			temp_file.write(code)
+		temp_file.close()
+		if(verifier('replica.cpp')):
+			with open('output.cpp','w') as out:
+				out.write(code)
+			out.close()
+			print("Passed")
+			os.system('rm replica.cpp')
+			break
+	
+	
+	# if fixed return new code 

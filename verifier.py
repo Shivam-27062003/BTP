@@ -25,7 +25,7 @@ def verifier(filename) -> bool:
 		modified_code = file.read()
 	code = add_code_chunk(filename,modified_code)
 	run_cbmc(code,5)
-	trace_path = 'trace.txt'
+	trace_path = 'trace'
 	variables = trace_extraction(trace_path)
 	command = 'rm trace verification.cpp'
 	os.system(command)

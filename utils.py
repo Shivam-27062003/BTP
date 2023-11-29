@@ -6,10 +6,10 @@ import sys,re
 '''
 
 class Custom_Error(Exception):
-    def __init__(self, value):
-        self.value = value 
-    def __str__(self):
-        return(repr(self.value))
+	def __init__(self, value):
+		self.value = value 
+	def __str__(self):
+		return(repr(self.value))
 
 '''
 	create abstract syntax tree for the given code
@@ -121,6 +121,15 @@ def find_loop_pattern(code,code_chunk):
 		modified_loop_content =temp + '\n' +  code_chunk
 		code = code.replace(loop_content, modified_loop_content)
 		break
+	loop_pattern = re.compile(r'do\s*{([^{}]*(?:{[^{}]*}[^{}]*)*)}\s*while\s*\([^)]*\);')
+	matches = re.finditer(loop_pattern, code)
+	for match in matches:
+		loop_content = match.group(1)
+		print(loop_content)
+		temp = loop_content
+		modified_loop_content =temp + '\n' +  code_chunk
+		code = code.replace(loop_content, modified_loop_content)
+		break
 	return code
 
 def trace_extraction(tracefile):
@@ -166,6 +175,7 @@ def create_code_chunk_CPROVER_assume(code,variables,variables_values_extracted_f
 		return modified_code
 	
 def all_zero_heuristic(trace,varibles):
+	patches = []
 	patch = ''
 	ans = False
 	for x in trace:
@@ -174,11 +184,13 @@ def all_zero_heuristic(trace,varibles):
 			if y!=0:
 				all_zero = False
 		if(all_zero and x in varibles):
-			patch += '{}!=0;\n'.format(x)
+			patch = f'{x}!=0'
+			patches.append(patch)
 			ans = True
-	return (ans,patch)
+	return (ans,patches)
 
 def all_negative_heuristic(trace,variables):
+	patches = []
 	patch = ''
 	ans = False
 	for x in trace:
@@ -187,9 +199,10 @@ def all_negative_heuristic(trace,variables):
 			if y>=0:
 				all_negative= False
 		if(all_negative and x in variables):
-			patch += '{}>=0;\n'.format(x)
+			patch = f'{x}>=0'
+			patches.append(patch)
 			ans = True
-	return (ans,patch)
+	return (ans,patches)
 
 def generate_patch(trace,variables):
 	variables_list = []
