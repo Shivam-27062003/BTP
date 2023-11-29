@@ -1,36 +1,23 @@
-typedef struct NNode{
-    struct NNode * nxtact;
-}INSDS;
-
-int __VERIFIER_nondet_ind();
-
-INSDS * initLink(int n){
-    INSDS* head=(INSDS*)malloc(sizeof(INSDS));
-    head->nxtact=head;
-    INSDS* cyclic=head;
-
-    int i;
-    for (i=2; i<=n; i++) {
-        INSDS * body=(INSDS*)malloc(sizeof(INSDS));
-        body->nxtact=body;
-        cyclic->nxtact=body;
-        cyclic=cyclic->nxtact;
-    }
-    cyclic->nxtact=cyclic;
-    return head;
-}
-
+/*
+Commit Number: 71c3a97142265804d64f443bd1ddb68ac356f8a3
+URL: https://github.com/XQuartz/xorg-server/commit/71c3a97142265804d64f443bd1ddb68ac356f8a3
+Project Name: xorg-server
+License: MIT
+termination: false
+When mask = 0 , it will be non-terminating.
+*/
+int __VERIFIER_nondet_int();
 int main()
 {
-    int num = __VERIFIER_nondet_int();
-    if( num <= 0 || num > 65534 )
-        return 0;
-    INSDS* list = initLink( num );
-    INSDS* ip = list;
-    while( ip != 0 )
+    int mask= __VERIFIER_nondet_int();
+    int o_mask = mask;
+    while( ( mask & 1 ) == 0 )
     {
-        INSDS *nxt = ip->nxtact;
-        ip = nxt;
+        mask >>= 1;
+__CPROVER_assume(!(mask==0));
+
+__CPROVER_assert(!(o_mask==mask),"OK");
+        o_mask = mask;
     }
     return 0;
 }

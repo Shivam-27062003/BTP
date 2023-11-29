@@ -116,12 +116,9 @@ def find_loop_pattern(code,code_chunk):
 	loop_pattern = r'(?:for|while|do)\s*\([^)]*\)\s*\{([^}]+)\}'
 	matches = re.finditer(loop_pattern, code)
 	for match in matches:
-		print(match.group[0])
 		loop_content = match.group(1)
-		print(loop_content)
 		temp = loop_content
 		modified_loop_content =temp + '\n' +  code_chunk
-		print(modified_loop_content)
 		code = code.replace(loop_content, modified_loop_content)
 	return code
 
@@ -154,18 +151,18 @@ def trace_extraction(tracefile):
 def create_code_chunk_CPROVER_assume(code,variables,variables_values_extracted_from_trace):
 	temp = ''
 	for variable in variables:
-		if variable not in variables_values_extracted_from_trace:
+		if variable[1] not in variables_values_extracted_from_trace:
 			continue
-		if variable[0] =='o' and variable[1] =='_':
+		if variable[1][0] =='o' and variable[1][1] =='_':
 			continue
 		if temp!='':
 			temp += ' && '
-		temp += variable +'=='+ str(variables_values_extracted_from_trace[variable])
+		temp += variable[1] +'=='+ str(variables_values_extracted_from_trace[variable[1]])
 	if temp!='':
 		code_chunk = '__CPROVER_assume(!(' + temp + '));\n'
 		pattern = r'(__CPROVER_assert\(.*\);)'
 		modified_code = re.sub(pattern, code_chunk + '\n\\1', code)
-	return modified_code
+		return modified_code
 
 if __name__ == "__main__":
 	filepath: str = None
@@ -179,4 +176,3 @@ if __name__ == "__main__":
 	code = insert_declarations(code,variables)
 	code_chunk = create_code_chunk_CPROVER_assert(variables)
 	code = find_loop_pattern(code,code_chunk)
-	print(code)

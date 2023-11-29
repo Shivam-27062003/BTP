@@ -1,5 +1,4 @@
 int __VERIFIER_nondet_int();
-
 int main()
 {
 

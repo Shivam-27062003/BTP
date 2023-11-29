@@ -32,10 +32,24 @@ if __name__ == "__main__":
 	os.system(command)
 
 	# trace sample extraction
+	trace = []
+	trace.append(trace_extraction('trace'))
 
 	# inject cbmc assume statement and again get the trace repeat it k times
+	for i in range(30):
+		with open('replica.cpp','r') as file:
+			code = file.read()
+			file.close()
+		code = create_code_chunk_CPROVER_assume(code,variables,trace[i])
+		if code != None:
+			with open('replica.cpp','w') as file:
+				file.write(code)
+		command = 'cbmc {}.cpp --unwind 5 --trace > {}'.format('replica','trace')
+		trace.append(trace_extraction('trace'))
+		os.system(command)
 
 	# with k sample of traces find the pattern of trace and failure
+	
 
 	# develop the heuristic to apply fix for the bug
 
@@ -43,4 +57,5 @@ if __name__ == "__main__":
 
 	# if fixed return new code 
 
-	print(5)
+	command = 'rm replica.cpp trace'
+	os.system(command)
