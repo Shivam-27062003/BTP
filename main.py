@@ -49,7 +49,8 @@ if __name__ == "__main__":
 		os.system(command)
 
 	# with k sample of traces find the pattern of trace and failure
-	
+	for x in trace:
+		print(x)
 
 	# develop the heuristic to apply fix for the bug
 

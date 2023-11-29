@@ -10,7 +10,8 @@ int main()
         return 0;
     while( b < end )
     {
-        b += ff_subtitles_next_line();
+        int temp = ff_subtitles_next_line();
+        b += temp;
         if( b >= end - 4 )
         return 0;
     }
