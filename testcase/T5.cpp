@@ -1,48 +1,22 @@
+/*
+Commit Number: c44da115063bfea7ef8b2afd1c9d52737e2b7f70
+URL: https://github.com/coreutils/coreutils/commit/c44da115063bfea7ef8b2afd1c9d52737e2b7f70
+Project Name: coreutils
+License: GPL3
+termination: false
+This program includes shift overflow : a1 << 31 and bit operation;
+This program is non-terminating, when a0 =0 and a1 = 0.
+*/
 int __VERIFIER_nondet_int();
-void* malloc(signed x);
-typedef struct NNode{
-    struct NNode * nxtact;
-}INSDS;
-INSDS * initLink(int n){
-    INSDS* head=(INSDS*)malloc(sizeof(INSDS));
-    head->nxtact=head;
-    INSDS* cyclic=head;
-    int i;
-    for (i=2; i<=n; i++) {
-        INSDS * body=(INSDS*)malloc(sizeof(INSDS));
-        body->nxtact=body;
-        cyclic->nxtact=body;
-        cyclic=cyclic->nxtact;
-}
-    cyclic->nxtact=cyclic;
-    return head;
-}
 int main()
 {
-    int num = __VERIFIER_nondet_int();
-    if( num <= 0 || num > 65534 )
-        return 0;
-    INSDS* list = initLink( num );
-    INSDS* ip = list;
-    int o_num = num;
-    INSDS* o_list = list;
-    INSDS* o_ip = ip;
-    while( ip != 0 )
-    {
-        INSDS *nxt = ip->nxtact;
-        ip = nxt;
-__CPROVER_assume(!(num==4));
-
-__CPROVER_assume(!(num==2));
-
-__CPROVER_assume(!(num==1));
-
-__CPROVER_assume(!(num==3));
-
-__CPROVER_assume(!(num==5));
-
-__CPROVER_assert(!(o_num==num && o_ip==ip && o_list==list),"OK");
-        o_num = num,o_list=list,o_ip=ip;
-}
+    int a0 = __VERIFIER_nondet_int();
+    int a1 = __VERIFIER_nondet_int();
+    int y =  a0 & 1;
+    while( y  == 0){
+        a0 = ( a1 << 31 ) | ( a0 >> 1 );
+        a1 = a1 >> 1;
+        y = (a0 & 1);
+    }
     return 0;
 }

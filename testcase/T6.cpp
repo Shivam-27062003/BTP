@@ -1,23 +1,18 @@
 /*
-Commit Number: 71c3a97142265804d64f443bd1ddb68ac356f8a3
-URL: https://github.com/XQuartz/xorg-server/commit/71c3a97142265804d64f443bd1ddb68ac356f8a3
-Project Name: xorg-server
-License: MIT
+Commit Number: 5bec3fff0bac50f4b4d4d3b02e70161a2bf38d0f
+URL: https://github.com/brltty/brltty/commit/5bec3fff0bac50f4b4d4d3b02e70161a2bf38d0f
+Project Name: brltty
+License: LGPL-2.1
 termination: false
-When mask = 0 , it will be non-terminating.
+This program will go into an infinite loop if wc is negative
 */
 int __VERIFIER_nondet_int();
 int main()
 {
-    int mask= __VERIFIER_nondet_int();
-    int o_mask = mask;
-    while( ( mask & 1 ) == 0 )
-    {
-        mask >>= 1;
-__CPROVER_assume(!(mask==0));
-
-__CPROVER_assert(!(o_mask==mask),"OK");
-        o_mask = mask;
-    }
+    int wc = __VERIFIER_nondet_int();
+    do{
+        int y = 5;
+    
+    }while( wc >>= 6 );
     return 0;
 }
