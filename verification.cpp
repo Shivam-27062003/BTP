@@ -1,3 +1,8 @@
+int o_rc;
+int o_errno;
+int o_size;
+int o_pos;
+int o_flag;
 int flag = 0;
 int read(int,int);
 int __VERIFIER_nondet_int();
@@ -21,6 +26,14 @@ int main()
             continue;
         }
         pos += rc;
-    }
+        if(!(rc!=0))break;
+    
+__CPROVER_assert(!(o_flag==flag && o_pos==pos && o_size==size && o_errno==errno && o_rc==rc),"OK");
+o_flag=flag;
+o_pos=pos;
+o_size=size;
+o_errno=errno;
+o_rc=rc;
+}
     return 0;
 }

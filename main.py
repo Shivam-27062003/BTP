@@ -49,14 +49,21 @@ if __name__ == "__main__":
 		os.system(command)
 
 	# with k sample of traces find the pattern of trace and failure
-	for x in trace:
-		print(x)
+	Trace: dict = {}
+	for Dict in trace:
+		for x in Dict:
+			if x not in Trace:
+				Trace[x] = [Dict[x]]
+			else:
+				Trace[x].append(Dict[x])
 
 	# develop the heuristic to apply fix for the bug
+	patch = generate_patch(Trace,variables)
+	print(patch)
 
 	# run verifier on the fixed code 
 
 	# if fixed return new code 
 
 	command = 'rm replica.cpp trace'
-	os.system(command)
+	# os.system(command)

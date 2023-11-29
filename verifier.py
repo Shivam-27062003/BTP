@@ -16,7 +16,7 @@ def run_cbmc(modified_code: str,no_of_unwind: int):
 	with open(filename,'w') as file:
 		file.write(modified_code)
 	input_path = filename
-	output_path = 'trace.txt'
+	output_path = 'trace'
 	cbmc_command = 'cbmc {} --unwind {} --trace > {}'.format(input_path,no_of_unwind,output_path)
 	os.system(cbmc_command)
 
@@ -27,6 +27,8 @@ def verifier(filename) -> bool:
 	run_cbmc(code,5)
 	trace_path = 'trace.txt'
 	variables = trace_extraction(trace_path)
+	command = 'rm trace verification.cpp'
+	os.system(command)
 	if len(variables)==0:
 		return True
 	return False

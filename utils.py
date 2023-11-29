@@ -113,13 +113,14 @@ def create_code_chunk_CPROVER_assume(code):
 
 
 def find_loop_pattern(code,code_chunk):
-	loop_pattern = r'(?:for|while|do)\s*\([^)]*\)\s*\{([^}]+)\}'
+	loop_pattern = re.compile(r'while\s*\([^)]*\)\s*{([^{}]*(?:{[^{}]*}[^{}]*)*)}')
 	matches = re.finditer(loop_pattern, code)
 	for match in matches:
 		loop_content = match.group(1)
 		temp = loop_content
 		modified_loop_content =temp + '\n' +  code_chunk
 		code = code.replace(loop_content, modified_loop_content)
+		break
 	return code
 
 def trace_extraction(tracefile):
@@ -163,16 +164,40 @@ def create_code_chunk_CPROVER_assume(code,variables,variables_values_extracted_f
 		pattern = r'(__CPROVER_assert\(.*\);)'
 		modified_code = re.sub(pattern, code_chunk + '\n\\1', code)
 		return modified_code
+	
+def all_zero_heuristic(trace,varibles):
+	patch = ''
+	ans = False
+	for x in trace:
+		all_zero = True
+		for y in trace[x]:
+			if y!=0:
+				all_zero = False
+		if(all_zero and x in varibles):
+			patch += '{}!=0;\n'.format(x)
+			ans = True
+	return (ans,patch)
 
-if __name__ == "__main__":
-	filepath: str = None
-	if len(sys.argv) > 1:
-		filepath = sys.argv[1]
-	ast = create_ast(filepath)
-	variables = []
-	extract_variables(ast,variables,False)
-	with open(filepath,'r') as file1:
-		code = file1.read()
-	code = insert_declarations(code,variables)
-	code_chunk = create_code_chunk_CPROVER_assert(variables)
-	code = find_loop_pattern(code,code_chunk)
+def all_negative_heuristic(trace,variables):
+	patch = ''
+	ans = False
+	for x in trace:
+		all_negative = True
+		for y in trace[x]:
+			if y>=0:
+				all_negative= False
+		if(all_negative and x in variables):
+			patch += '{}>=0;\n'.format(x)
+			ans = True
+	return (ans,patch)
+
+def generate_patch(trace,variables):
+	variables_list = []
+	for x,y in variables:
+		variables_list.append(y)
+	ans,patch = all_zero_heuristic(trace,variables_list)
+	if ans==True:
+		return patch
+	ans,patch = all_negative_heuristic(trace,variables_list)
+	if ans==True:
+		return patch

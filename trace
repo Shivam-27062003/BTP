@@ -1,0 +1,209 @@
+CBMC version 5.10 (cbmc-5.10) 64-bit x86_64 linux
+Parsing replica.cpp
+Converting
+Type-checking replica
+Generating GOTO Program
+Adding CPROVER library (x86_64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Running with 8 object bits, 56 offset bits (default)
+Starting Bounded Model Checking
+Unwinding loop main.0 iteration 1 file replica.cpp line 18 function main thread 0
+Unwinding loop main.0 iteration 2 file replica.cpp line 18 function main thread 0
+Unwinding loop main.0 iteration 3 file replica.cpp line 18 function main thread 0
+Unwinding loop main.0 iteration 4 file replica.cpp line 18 function main thread 0
+Not unwinding loop main.0 iteration 5 file replica.cpp line 18 function main thread 0
+size of program expression: 558 steps
+simple slicing removed 127 assignments
+Generated 5 VCC(s), 5 remaining after simplification
+Passing problem to propositional reduction
+converting SSA
+Running propositional reduction
+Post-processing
+Solving with MiniSAT 2.2.1 with simplifier
+3030 variables, 16810 clauses
+SAT checker: instance is SATISFIABLE
+Runtime decision procedure: 0.013122s
+
+** Results:
+[main.assertion.1] OK: FAILURE
+
+Trace for main.assertion.1:
+
+State 26 file replica.cpp line 12 function main thread 0
+----------------------------------------------------
+  pos=0 (00000000 00000000 00000000 00000000)
+
+State 27 file replica.cpp line 12 function main thread 0
+----------------------------------------------------
+  pos=0 (00000000 00000000 00000000 00000000)
+
+State 28 file replica.cpp line 13 function main thread 0
+----------------------------------------------------
+  size=0 (00000000 00000000 00000000 00000000)
+
+State 29 file replica.cpp line 13 function main thread 0
+----------------------------------------------------
+  size=1 (00000000 00000000 00000000 00000001)
+
+State 30 file replica.cpp line 14 function main thread 0
+----------------------------------------------------
+  flag=0 (00000000 00000000 00000000 00000000)
+
+State 31 file replica.cpp line 15 function main thread 0
+----------------------------------------------------
+  errno=0 (00000000 00000000 00000000 00000000)
+
+State 32 file replica.cpp line 15 function main thread 0
+----------------------------------------------------
+  errno=0 (00000000 00000000 00000000 00000000)
+
+State 35 file replica.cpp line 20 function main thread 0
+----------------------------------------------------
+  rc=0 (00000000 00000000 00000000 00000000)
+
+State 39 file replica.cpp line 20 function main thread 0
+----------------------------------------------------
+  rc=-786625 (11111111 11110011 11111111 00111111)
+
+State 41 file replica.cpp line 28 function main thread 0
+----------------------------------------------------
+  pos=-786625 (11111111 11110011 11111111 00111111)
+
+State 72 file replica.cpp line 91 function main thread 0
+----------------------------------------------------
+  o_flag=0 (00000000 00000000 00000000 00000000)
+
+State 73 file replica.cpp line 92 function main thread 0
+----------------------------------------------------
+  o_pos=-786625 (11111111 11110011 11111111 00111111)
+
+State 74 file replica.cpp line 93 function main thread 0
+----------------------------------------------------
+  o_size=1 (00000000 00000000 00000000 00000001)
+
+State 75 file replica.cpp line 94 function main thread 0
+----------------------------------------------------
+  o_errno=0 (00000000 00000000 00000000 00000000)
+
+State 76 file replica.cpp line 95 function main thread 0
+----------------------------------------------------
+  o_rc=-786625 (11111111 11110011 11111111 00111111)
+
+State 79 file replica.cpp line 20 function main thread 0
+----------------------------------------------------
+  rc=0 (00000000 00000000 00000000 00000000)
+
+State 83 file replica.cpp line 20 function main thread 0
+----------------------------------------------------
+  rc=-1835009 (11111111 11100011 11111111 11111111)
+
+State 85 file replica.cpp line 28 function main thread 0
+----------------------------------------------------
+  pos=-2621634 (11111111 11010111 11111111 00111110)
+
+State 117 file replica.cpp line 91 function main thread 0
+----------------------------------------------------
+  o_flag=0 (00000000 00000000 00000000 00000000)
+
+State 118 file replica.cpp line 92 function main thread 0
+----------------------------------------------------
+  o_pos=-2621634 (11111111 11010111 11111111 00111110)
+
+State 119 file replica.cpp line 93 function main thread 0
+----------------------------------------------------
+  o_size=1 (00000000 00000000 00000000 00000001)
+
+State 120 file replica.cpp line 94 function main thread 0
+----------------------------------------------------
+  o_errno=0 (00000000 00000000 00000000 00000000)
+
+State 121 file replica.cpp line 95 function main thread 0
+----------------------------------------------------
+  o_rc=-1835009 (11111111 11100011 11111111 11111111)
+
+State 124 file replica.cpp line 20 function main thread 0
+----------------------------------------------------
+  rc=0 (00000000 00000000 00000000 00000000)
+
+State 128 file replica.cpp line 20 function main thread 0
+----------------------------------------------------
+  rc=-1065353216 (11000000 10000000 00000000 00000000)
+
+State 130 file replica.cpp line 28 function main thread 0
+----------------------------------------------------
+  pos=-1067974850 (11000000 01010111 11111111 00111110)
+
+State 162 file replica.cpp line 91 function main thread 0
+----------------------------------------------------
+  o_flag=0 (00000000 00000000 00000000 00000000)
+
+State 163 file replica.cpp line 92 function main thread 0
+----------------------------------------------------
+  o_pos=-1067974850 (11000000 01010111 11111111 00111110)
+
+State 164 file replica.cpp line 93 function main thread 0
+----------------------------------------------------
+  o_size=1 (00000000 00000000 00000000 00000001)
+
+State 165 file replica.cpp line 94 function main thread 0
+----------------------------------------------------
+  o_errno=0 (00000000 00000000 00000000 00000000)
+
+State 166 file replica.cpp line 95 function main thread 0
+----------------------------------------------------
+  o_rc=-1065353216 (11000000 10000000 00000000 00000000)
+
+State 169 file replica.cpp line 20 function main thread 0
+----------------------------------------------------
+  rc=0 (00000000 00000000 00000000 00000000)
+
+State 173 file replica.cpp line 20 function main thread 0
+----------------------------------------------------
+  rc=0 (00000000 00000000 00000000 00000000)
+
+State 175 file replica.cpp line 28 function main thread 0
+----------------------------------------------------
+  pos=-1067974850 (11000000 01010111 11111111 00111110)
+
+State 207 file replica.cpp line 91 function main thread 0
+----------------------------------------------------
+  o_flag=0 (00000000 00000000 00000000 00000000)
+
+State 208 file replica.cpp line 92 function main thread 0
+----------------------------------------------------
+  o_pos=-1067974850 (11000000 01010111 11111111 00111110)
+
+State 209 file replica.cpp line 93 function main thread 0
+----------------------------------------------------
+  o_size=1 (00000000 00000000 00000000 00000001)
+
+State 210 file replica.cpp line 94 function main thread 0
+----------------------------------------------------
+  o_errno=0 (00000000 00000000 00000000 00000000)
+
+State 211 file replica.cpp line 95 function main thread 0
+----------------------------------------------------
+  o_rc=0 (00000000 00000000 00000000 00000000)
+
+State 214 file replica.cpp line 20 function main thread 0
+----------------------------------------------------
+  rc=0 (00000000 00000000 00000000 00000000)
+
+State 218 file replica.cpp line 20 function main thread 0
+----------------------------------------------------
+  rc=0 (00000000 00000000 00000000 00000000)
+
+State 220 file replica.cpp line 28 function main thread 0
+----------------------------------------------------
+  pos=-1067974850 (11000000 01010111 11111111 00111110)
+
+Violated property:
+  file replica.cpp line 90 function main
+  OK
+  !(o_flag == flag && o_pos == pos && o_size == size && o_errno == errno && o_rc == rc)
+
+
+
+** 1 of 1 failed (1 iteration)
+VERIFICATION FAILED
